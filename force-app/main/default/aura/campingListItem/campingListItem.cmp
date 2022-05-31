@@ -1,0 +1,11 @@
+<aura:component>
+
+    <aura:attribute name="item" type="Camping_Item__c" required="true" default="{Name: 'JJ', Price__c:20, Quantity__c:5,
+                                                                                Packed__c:true}"/>
+        <lightning:formattedText title="Name" value="{!v.item.Name}"/>
+        <lightning:formattedNumber value="{!v.item.Quantity__c}"/>
+        <lightning:formattedNumber value="{!v.item.Price__c}" style="currency"/>:
+        <lightning:input type="toggle" label="Packed__c" checked="{!v.item.Packed__c}"/>
+    
+    <p><lightning:button label="Packed!" onclick="{!c.packItem}"></lightning:button></p>
+</aura:component>
