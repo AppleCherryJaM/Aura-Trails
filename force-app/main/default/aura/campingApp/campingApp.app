@@ -1,3 +1,4 @@
 <aura:application extends="force:slds">
-    <c:campingList/>
+    <c:campingHeader />
+    <c:campingList />
 </aura:application>

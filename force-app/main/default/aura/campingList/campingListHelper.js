@@ -1,30 +1,42 @@
 ({
-	
-    validateFields : function (component,field) {
-        
-        var nameField = field;
-        console.log('yes:'+nameField);
-        var expname = nameField.get("v.value"); 
-        if ($A.util.isEmpty(expname)){
-           component.set("v.er",true);
-           nameField.set("v.errors", [{message:"this field can't be blank."}]);
-        }
-        else {
-            nameField.set("v.errors", null);
-        }
-    },
-    
-    createItem : function (component,Item){         
-        var action = component.get("c.saveItem");
-        action.setParams({"item":Item});
-        action.setCallback(this,function(response){
+    createItem : function(component,campaign)
+    {
+        console.log("\nEntry into CampingListHelper.js -> createItem()");        
+        console.log("\nCampingListHelper.js -> createItem()\n the Item: "+ JSON.stringify(campaign));
+
+        this.saveItem(component, campaign, function(response)
+        {
             var state = response.getState();
-            if (component.isValid() && state === "SUCCESS") {
-                var campings = component.get("v.items");
-                campings.push(response.getReturnValue());
-                component.set("v.items", campings);
+            if (component.isValid() && state === "SUCCESS")
+            {
+                var campaigns = component.get("v.items");
+                console.log("Campaigns before create: "+JSON.stringify(campaigns));
+                var retcamp = response.getReturnValue();
+                campaigns.push(retcamp);
+                console.log("Campaigns after  create: "+JSON.stringify(campaigns));
+                component.set("v.items",campaigns);   
             }
-        });
-       $A.enqueueAction(action);        
+        });        
+    },
+
+    saveItem : function(component,campaign,callback)
+    {
+        console.log("\nEntry into CampingListHelper.js -> saveItem()");        
+        console.log("\nCampingListHelper.js -> saveItem() the campaign is: "+ JSON.stringify(campaign));
+
+         var action = component.get("c.saveItem");
+         console.log("Helper->saveItems"+campaign);
+         action.setParams
+         ({
+            "campaign": campaign
+         });
+
+        if (callback)
+        {
+            action.setCallback(this, callback);
+        }
+        $A.enqueueAction(action);        
+
     }
+
 })
